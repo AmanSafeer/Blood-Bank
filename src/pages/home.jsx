@@ -29,7 +29,8 @@ homeSlideText:{
  
 },
 homeSlideHeading1:{
-  fontSize:'4vmin'
+  fontSize:'4vmin',
+  textTransform:'uppercase',
 },
 homeSlideHeading2:{
   fontWeight:'normal',
@@ -43,15 +44,19 @@ homeBloodSection:{
   width:'100%',
   overflow:'hidden',
   backgroundColor:'#f3f3f3',
+  
 },
 homeBloodHeading1:{
   fontSize:'4vmin',
   textTransform:'uppercase',
-  textAlign:'left',
+  flexGrow:1
 },
 homeBloodInformation:{
   textAlign:'left',
-  fontSize:'2.2vmin'
+  fontSize:'2.3vmin',
+  padding:"0px 10px",
+  lineHeight:2,
+  color:'#232323'
 }
 })
 
@@ -77,7 +82,7 @@ class Home extends Component {
                 Blood is the most precious gift that anyone can give to another person.
                 Donating blood not only saves the life also save donor's lives.
               </h2>
-              <Button color="secondary" margin="normal" variant="contained" style={{backgroundColor:'#ff1818'}}>Register as Donor</Button>
+              <Button color="secondary" margin="normal" variant="contained" style={{backgroundColor:'#ff1818',fontSize:'2vmin'}}>Register as Donor</Button>
             </div>
           </div>
           <div className={classes.homeBloodSection}>

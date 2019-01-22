@@ -27,7 +27,8 @@ const styles =(theme)=>({
     padding:10
   },
   heading:{
-    fontFamily:"fantasy"
+    fontFamily:"fantasy",
+    fontSize:'5vmin'
   },
  
   tabsRoot: {
@@ -126,7 +127,7 @@ class Header extends Component {
         <AppBar position="static" color="default" className={classes.appBar}>
           <Toolbar>
             <Typography variant="h4" color="inherit" className={classes.heading}>
-            <img src={logoImg} className="logoImg"/> <span className="heading">Blood </span>Bank
+            <img src={logoImg} alt="logo Image" className="logoImg"/> <span className="heading">Blood </span>Bank
             </Typography>
           </Toolbar>
           { 
