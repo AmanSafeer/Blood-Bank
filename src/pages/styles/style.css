@@ -1,0 +1,16 @@
+.App{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.homeSlideImg{
+    display: block;
+    max-height: 700px;
+    min-height: 200px
+}
+.container{
+    padding: 10px
+}
+   
