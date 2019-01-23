@@ -1,0 +1,34 @@
+export const bloods=[
+    {
+        group:'A+',
+        details:'details'
+    },
+    {
+        group:'A-',
+        details:'details'
+    },
+    {
+        group:'B+',
+        details:'details'
+    },
+    {
+        group:'B-',
+        details:'details'
+    },
+    {
+        group:'AB+',
+        details:'details'
+    },
+    {
+        group:'AB-',
+        details:'details'
+    },
+    {
+        group:'O+',
+        details:'details'
+    },
+    {
+        group:'O-',
+        details:'details'
+    }
+]

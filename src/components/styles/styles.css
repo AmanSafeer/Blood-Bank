@@ -3,7 +3,7 @@
 }
 .logoImg{
     height: auto;
-    max-width: 6vmin;
+    max-width: 40px;
     vertical-align: bottom
 }
 footer{
@@ -14,5 +14,6 @@ footer{
     background:black;
     color:white;
     flex-grow: 2;
-    font-size: 2.2vmin
+    font-size: 16px;
+    margin-top: 20px;
 }

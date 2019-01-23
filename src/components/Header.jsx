@@ -28,7 +28,7 @@ const styles =(theme)=>({
   },
   heading:{
     fontFamily:"fantasy",
-    fontSize:'5vmin'
+    
   },
  
   tabsRoot: {
@@ -81,7 +81,7 @@ const styles =(theme)=>({
 class Header extends Component {
   constructor(props){
     super(props)
-    this.media= window.matchMedia("(max-width: 800px)")
+    this.media= window.matchMedia("(max-width: 750px)")
     this.state = {
       value: props.value,
       screenBreak:false
