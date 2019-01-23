@@ -19,7 +19,8 @@ homeImageSection:{
   display:'flex',
   justifyContent:'center',
   alignItems:'center',
-  backgroundColor:'black',
+  backgroundColor:'#252525',
+  minHeight:500,
   width:'100%',
   overflow:'hidden',
   position:'relative',
@@ -42,7 +43,6 @@ homeBloodSection:{
   overflow:'hidden',
 },
 homeBloodHeading1:{
-  // textTransform:'uppercase',
   flexGrow:1,
   fontSize:50,
   color:'#d80909'
@@ -54,6 +54,7 @@ homeBloodHeading2:{
 },
 homeBloodInformation:{
   textAlign:'justify',
+  wordSpacing:-2,
   fontWeight:'normal',
   flexGrow:1,
   padding:"10px",
@@ -69,7 +70,7 @@ homeBloodCards:{
   flexWrap:'wrap',
   flexGrow:1,
   padding:10,
-  maxHeight:500,
+  maxHeight:600,
   overflow:'auto',
   backgroundColor:'#f5f3f3'
 }
@@ -109,21 +110,20 @@ class Home extends Component {
               </article>
               <article className={classes.homeBloodInformation}>
                 <h2 className={classes.homeBloodHeading2}>Blood Groups:</h2>
-                <p>There are four major blood groups determined by the presence or absence of two antigens -A and -B on the surface of red blood cells:
+                <p>There are four major blood groups determined by the presence or absence of two antigens -A and -B on the surface of red blood cells: </p>
                 <ul>
                   <li>Group A - has only the A antigen on red cells and B antibody in the plasma.</li>
                   <li>Group B - has only the B antigen on red cells and A antibody in the plasma.</li>
                   <li>Group AB - has both A and B antigens on red cells but neither A nor B antibody in the plasma.</li>
                   <li>Group O - has neither A nor B antigens on red cells but both A and B antibody are in the plasma. </li>
                 </ul>
-                </p>
               </article>
               <article className={classes.homeBloodInformation}>
                 <h2 className={classes.homeBloodHeading2}>RH factor:</h2>
                 <p>In addition to the A and B antigens, there is a protein called the Rh factor, which can be either present (+) or absent (–), creating the 8 most common blood types (O+, O-, A+, A-, B+, B-, AB+, AB-).Rh-negative blood is given to Rh-negative patients, and Rh-positive or Rh-negative blood may be given to Rh-positive patients.</p>
                 <div className={classes.homeBloodCards}>
-                  {bloods.map((blood)=>
-                  <BloodCard image={bloodA_p} group={blood.group} details={blood.details}/>
+                  {bloods.map((blood,ind)=>
+                  <BloodCard key={ind} image={bloodA_p} group={blood.group} details={blood.details}/>
                   )}
                 </div>
               </article>

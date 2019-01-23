@@ -43,6 +43,7 @@ const styles =(theme)=>({
     minWidth: 72,
     fontWeight: theme.typography.fontWeightRegular,
     marginRight: theme.spacing.unit * 2,
+    fontSize:16,
     fontFamily: [
       '-apple-system',
       'BlinkMacSystemFont',
@@ -58,6 +59,7 @@ const styles =(theme)=>({
     '&:hover': {
       color: '#ff1818',
       opacity: 1,
+      
     },
     '&$tabSelected': {
       color: '#ff1818',
