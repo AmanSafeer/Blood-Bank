@@ -1,5 +1,4 @@
 import * as firebase from 'firebase'
-
 var config = {
     apiKey: "AIzaSyBHx9ZW_T71FKNyyHWYxkzXnArmV_fZzlg",
     authDomain: "blood-bank-web.firebaseapp.com",

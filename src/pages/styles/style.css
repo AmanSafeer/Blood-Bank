@@ -1,13 +1,24 @@
 .App{
+    text-align: center;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    align-items: stretch;
+    min-Height: 100vh;
+    flex-direction: column;
 }
 
-.homeSlideImg{
-    display: block;
-    max-height: 700px;
+.container{
+    padding:5px;
+    flex-grow: 1;
+    background-image: url(/static/media/blood.5d413148.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-attachment: fixed;
 }
-
-   
+.login{
+    background-size: cover;
+}
+.form{
+    background: rgba(255,255,255,0.9);
+    padding:10px
+}

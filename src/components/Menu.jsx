@@ -32,9 +32,10 @@ function RenderPropsMenu(props) {
               </Button>
               <Menu id="render-props-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
                 <MenuItem onClick={()=>handleClose('/home')}>Home</MenuItem>
-                <MenuItem onClick={()=>handleClose('/bloods')}>Available Bloods</MenuItem>
+                <MenuItem onClick={()=>handleClose('/donors')}>Donors List</MenuItem>
+                <MenuItem onClick={()=>handleClose('/notifications')}>Notifications & Requests</MenuItem>
                 <MenuItem onClick={()=>handleClose('/profile')}>Your Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={props.signOut}>Logout</MenuItem>
               </Menu>
             </React.Fragment>
           );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './styles/styles.css'
 import PropTypes from 'prop-types';
+import * as firebase from 'firebase'
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,26 +9,36 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 // import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button'
+import {Link} from 'react-router-dom'
+import './styles/styles.css'
 import logoImg from '../blood.png'
 import Menu from './Menu'
 
 
 const styles =(theme)=>({
   header: {
-    flexGrow: 1,
+    flexGrow: 0,
   },
   appBar:{
-    display:'inline-flex',
+    display:'flex',
     flexWrap:'wrap',
     flexDirection:'row',
     justifyContent:'space-between',
     alignItems:'center',
     backgroundColor:'white',
+    padding:5
+  },
+  appBarLogin:{
+    display:'flex',
+    flexWrap:'wrap',
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'white',
     padding:10
   },
   heading:{
-    fontFamily:"fantasy",
-    
+    fontFamily:"fantasy",  
   },
  
   tabsRoot: {
@@ -43,7 +53,7 @@ const styles =(theme)=>({
     minWidth: 72,
     fontWeight: theme.typography.fontWeightRegular,
     marginRight: theme.spacing.unit * 2,
-    fontSize:16,
+    fontSize:14,
     fontFamily: [
       '-apple-system',
       'BlinkMacSystemFont',
@@ -96,21 +106,24 @@ class Header extends Component {
   };
 
   pageChange=(page)=>{
-    // event.preventDefault();
     this.props.history.push(page)
   }
   screenChange=(screen)=>{
     if (screen.matches) { 
-      this.setState({
-        screenBreak:true
-      })
-      console.log(true)
+      this.setState({screenBreak:true}) 
     } else {
-      this.setState({
-        screenBreak:false
-      })
-      console.log(false)
+      this.setState({screenBreak:false})
+      
     }
+  }
+  signOut=()=>{
+    firebase.auth().signOut()
+    .then(()=>{
+      this.props.history.replace('/')
+    })
+    .catch((err)=>{
+      alert(err)
+    })
   }
  
   componentDidMount(){
@@ -124,28 +137,29 @@ class Header extends Component {
   render() {
     const { classes } = this.props;
     const { value } = this.props;
+    
     return (
       <header className={classes.header}>
-        <AppBar position="static" color="default" className={classes.appBar}>
+        <AppBar position="static" color="default" className={!this.props.menu ? classes.appBar : classes.appBarLogin}>
           <Toolbar>
             <Typography variant="h4" color="inherit" className={classes.heading}>
             <img src={logoImg} alt="logo Image" className="logoImg"/> <span className="heading">Blood </span>Bank
             </Typography>
           </Toolbar>
-          { 
-          <div >  
+          {!this.props.menu &&
+          <div>  
             {!this.state.screenBreak ?
             <div value={value} onChange={this.handleChange} classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }} >
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Home"  onClick={() =>this.pageChange('/home')} />
-                <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Avaiable Bloods"  onClick={() =>this.pageChange('/bloods')}/>
+                <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Donors List"  onClick={() =>this.pageChange('/donors')}/>
+                <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Notifications & Requests" onClick={() =>this.pageChange('/notifications')}/> 
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Your Profile" onClick={() =>this.pageChange('/profile')}/> 
-                <Button  variant="contained" color="secondary" margin="normal" style={{backgroundColor:'#ff1818'}}>Logout</Button> 
+                <Button  variant="contained" color="secondary" margin="normal" style={{backgroundColor:'#ff1818'}} onClick={this.signOut}>Logout</Button> 
             </div>
             :
-              <Menu navigation={this.pageChange}/>
+              <Menu navigation={this.pageChange} signOut={this.signOut}/>
             }
-          </div>
-          }
+          </div>}
         </AppBar>
       </header>
     );
