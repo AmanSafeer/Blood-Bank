@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import slide from '../slide.jpg';
 import BloodCard from '../components/BloodCards';
 import {bloods} from '../components/BloodTypes';
+import {saveUserId,getProfile} from '../store/action/action'
 import bloodA_p from '../blood.png';
 
 const styles =(theme)=>({
@@ -79,7 +80,8 @@ class Home extends Component {
   getData(){
     firebase.auth().onAuthStateChanged((user)=>{
         if(user){
-            console.log("did mount")
+          this.props.saveUserId(user.uid);
+          this.props.getProfile(user.uid);
         }  
         else{
           this.props.history.replace('/')
@@ -89,6 +91,7 @@ class Home extends Component {
 
   componentDidMount(){
     this.getData();
+    this.props.saveUserId()
   }
   
   render() {
@@ -165,7 +168,8 @@ function mapStateToProps(state){
 }
 function mapDispatchToProps(dispatch){
   return {
-    
+    saveUserId:(id)=>dispatch(saveUserId(id)),
+    getProfile: (id)=>dispatch(getProfile(id)),
   }
 }
 

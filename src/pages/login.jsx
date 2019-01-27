@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
-import {loginErrorClose, loginError, loaderOpen, loaderClose} from '../store/action/action';
+import {loginErrorClose, loginError, loaderOpen, loaderClose,saveUserId,getProfile} from '../store/action/action';
 
 const styles =(theme)=>({
   form:{
@@ -64,6 +64,8 @@ class Login extends Component {
     .then(res=>{
         this.props.loginErrorClose();
         this.props.loaderClose();
+        this.props.saveUserId(res.user.uid)
+        this.props.getProfile(res.user.uid)
         this.props.history.replace('/home');
 
     })
@@ -81,6 +83,8 @@ class Login extends Component {
       .then(res =>{
           this.props.loginErrorClose();
           this.props.loaderClose();
+          this.props.saveUserId(res.user.uid)
+          this.props.getProfile(res.user.uid)
           this.props.history.replace('/home');
       })
       .catch(err=>{
@@ -92,6 +96,8 @@ class Login extends Component {
   componentDidMount(){
     firebase.auth().onAuthStateChanged((user)=>{
         if(user){
+            this.props.saveUserId(user.uid)
+            this.props.getProfile(user.uid)
             this.props.history.replace('/home');
         }
     })
@@ -156,7 +162,10 @@ function mapDispatchToProps(dispatch){
     loginError : (err)=> dispatch(loginError(err)),
 
     loaderOpen: ()=>dispatch(loaderOpen()),
-    loaderClose: ()=>dispatch(loaderClose())
+    loaderClose: ()=>dispatch(loaderClose()),
+
+    saveUserId:(id)=>dispatch(saveUserId(id)),
+    getProfile: (id)=>dispatch(getProfile(id)),
   }
 }
 

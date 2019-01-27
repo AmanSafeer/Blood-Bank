@@ -149,13 +149,13 @@ class Header extends Component {
           {!this.props.menu &&
           <div>  
             {!this.state.screenBreak ?
-            <div value={value} onChange={this.handleChange} classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }} >
+            <Tabs value={value} onChange={this.handleChange} classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }} >
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Home"  onClick={() =>this.pageChange('/home')} />
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Donors List"  onClick={() =>this.pageChange('/donors')}/>
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Notifications & Requests" onClick={() =>this.pageChange('/notifications')}/> 
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Your Profile" onClick={() =>this.pageChange('/profile')}/> 
                 <Button  variant="contained" color="secondary" margin="normal" style={{backgroundColor:'#ff1818'}} onClick={this.signOut}>Logout</Button> 
-            </div>
+            </Tabs>
             :
               <Menu navigation={this.pageChange} signOut={this.signOut}/>
             }

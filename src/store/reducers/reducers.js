@@ -5,14 +5,17 @@ const initialState = {
     loader:false,
 
     userId:null,
-    donors:[],
+    donors:null,
 
     registrationLoader:true,
 
     registered:false,
     profile:null,
+    oldProfile:null,
 
-    editing:false
+    editing:false,
+
+    requests:null
 };
 
 export default (state = initialState , action)=>{
@@ -45,6 +48,8 @@ export default (state = initialState , action)=>{
          }
 
          
+
+
          case actionTypes.SAVE_UID:{
             return{
                 ...state,
@@ -53,14 +58,13 @@ export default (state = initialState , action)=>{
         }
 
 
-         case actionTypes.REGISTER_DONOR:{
-             const newDonors= state.donors.concat(action.payload)
+
+
+         case actionTypes.REGISTRATION:{
             return{
                 ...state,
-                donors:newDonors,
-                profile:action.payload,
                 registered:true
-            }    
+            }
          }
          case actionTypes.REGISTRATION_LOADER_OPEN:{
              return{
@@ -73,6 +77,21 @@ export default (state = initialState , action)=>{
                 registrationLoader:false
             }
         }
+        case actionTypes.REGISTER_DONOR:{
+            return{
+                ...state,
+                profile:action.payload,
+                
+            }    
+         }
+         case actionTypes.UNREGISTERED:{
+            return{
+                ...state,
+                registered:false
+            }
+         }
+
+
 
 
         case actionTypes.EDIT_PROFILE:{
@@ -85,7 +104,7 @@ export default (state = initialState , action)=>{
         case actionTypes.UPDATE_PROFILE:{
            return{
                ...state,
-               profile:action.payload,
+            //    profile:action.payload,
                editing:false,
                registered:true
            }    
@@ -97,6 +116,30 @@ export default (state = initialState , action)=>{
                 registered:true
             }
         }
+        case actionTypes.OLD_PROFILE:{
+            return{
+                ...state,
+                oldProfile:action.payload
+            }
+        }
+
+
+
+        case actionTypes.GET_DONORS:{
+            return{
+                ...state,
+                donors:action.payload
+            }
+        }
+
+
+        case actionTypes.REQUEST:{
+            return{
+                ...state,
+                requests:action.payload
+            }
+        }
+
         default: return state;            
     }
 }

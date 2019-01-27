@@ -19,7 +19,8 @@ import Footer from '../components/Footer';
 import {bloods} from '../components/BloodTypes'
 import PaperSheet from '../components/PaperSheet'
 import Loader from '../components/Loader';
-import {registerDonor,saveUserId,getProfile,editProfile,updateProfile,cancelUpdation} from '../store/action/action'
+import SnackBar from '../components/Snackbars'
+import {registerDonor,saveUserId,getProfile,editProfile,updateProfile,cancelUpdation,oldProfile} from '../store/action/action'
 
 const styles =(theme)=>({
  
@@ -47,7 +48,16 @@ const styles =(theme)=>({
   profileFormUpdate:{
     backgroundColor:'darkOrange',
     color:'white'
+  },
+  emptyBox:{
+    display:'flex',
+    minHeight:'50vh',
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'rgba(255,255,255,0.9)',
+    padding:10,
   }
+
 })
 
 class Profile extends Component {
@@ -87,7 +97,10 @@ class Profile extends Component {
       const milliseconds= (todayDate.getTime())-(donationDate.getTime())
       const days = parseInt(milliseconds/(1000*60*60*24))
       console.log(days)
-      if(days < 150){return} 
+      if(days < 150){
+        alert('last blood donation must be 150 days ago')
+       return
+      } 
     }
     const donor =this.state;
     donor.uid=this.props.userId
@@ -98,9 +111,12 @@ class Profile extends Component {
 
   edit=()=>{
     const {name,email,age,contact,address,blood,gender,lastDate,lastDonation,key,uid} = this.props.profile
+    const Profile=this.props.profile
+    this.props.oldProfile(Profile)
     this.props.editProfile();
+
     this.setState(
-      {name:name ,email:email ,age:age ,contact:contact ,address:address, blood:blood, gender:gender, lastDate:lastDate, lastDonation: lastDonation, key:key, uid,uid})
+      {name:name ,email:email ,age:age ,contact:contact ,address:address, blood:blood, gender:gender, lastDate:lastDate, lastDonation: lastDonation, key:key, uid:uid})
 
   }
   update=()=>{
@@ -110,12 +126,29 @@ class Profile extends Component {
       const donationDate = new Date(date)
       const milliseconds= (todayDate.getTime())-(donationDate.getTime())
       const days = parseInt(milliseconds/(1000*60*60*24))
-      if(days < 150){return} 
+      if(days < 150){
+        alert('last blood donation must be 150 days ago')
+        return
+      } 
     }
+    let match=false;
+    const oldProfile= this.props.previousProfile;
     const profile =this.state;
-    this.props.updateProfile(profile)
+    console.log(oldProfile)
+    for (var key in profile){
+      if(profile[key] !== oldProfile[key]){
+        match=true;
+        break
+      }
+    }
 
+    if(match){
+    this.props.updateProfile(profile)
     this.setState({name:'',email:'',age:'',contact:'',address:'', blood:'',gender:'',lastDate:'',lastDonation: false, key:'', uid:''})
+    }
+    else{
+      alert('nothing changed in profile')
+    }
   }
 
   getData(){
@@ -136,38 +169,37 @@ class Profile extends Component {
 
   render() {
     const {classes}=this.props
-    console.log(this.props.profile)
     return (
       <div className="App">
-        <Header history={this.props.history} value={2}/>
+        <Header history={this.props.history} value={3}/>
         <div className="container">
           {this.props.registrationLoader ?
-          <div className={classes.profileForm}>< Loader/></div>
+          <div className={classes.emptyBox}><Loader size={70}/></div>
           :
           <div>
           {!this.props.registered ?
           <section >
             <article>
-                <h1 className={classes.profileFormHeading}>Register As Donor</h1>
+                <h1 className={classes.profileFormHeading}>Registration</h1>
+
                 <form className={classes.profileForm} onSubmit={this.register}>
-                 
                   <TextField className={classes.profileFormField} label="Name"  margin="normal" type="text" name="name" value={this.state.name} onChange={this.changeHandler} required={true}/><br/>
                   <TextField className={classes.profileFormField} label="Email"  margin="normal" type="email" name="email" value={this.state.email} onChange={this.changeHandler} required={true}/><br/>
                   <TextField className={classes.profileFormField} label="Age"  margin="normal" type="number" name="age" value={this.state.age} onChange={this.changeHandler} required={true}/><br/>
                   <TextField className={classes.profileFormField} label="Contact No"  margin="normal" type="number" name="contact" value={this.state.contact} onChange={this.changeHandler} required={true}/><br/>
                   <TextField className={classes.profileFormField} label="Address"  margin="normal" type="text" name="address" value={this.state.address} onChange={this.changeHandler} required={true}/><br/>
                   <div>
-                  <FormControl required className={classes.profileFormField}>
-                    <InputLabel>Blood Group</InputLabel>
-                    <Select style={{textAlign:'left'}} value={this.state.blood} onChange={this.changeHandler} inputProps={{ name: 'blood',}}>
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      {bloods.map((blood,ind)=>
-                      <MenuItem key={ind} value={blood.group}>{blood.group}</MenuItem>
-                      )}
-                    </Select>
-                  </FormControl><br/>
+                    <FormControl required className={classes.profileFormField}>
+                      <InputLabel>Blood Group</InputLabel>
+                      <Select style={{textAlign:'left'}} value={this.state.blood} onChange={this.changeHandler} inputProps={{ name: 'blood',}}>
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        {bloods.map((blood,ind)=>
+                        <MenuItem key={ind} value={blood.group}>{blood.group}</MenuItem>
+                        )}
+                      </Select>
+                    </FormControl><br/>
                   </div>
                          
                   <FormControlLabel control={<Checkbox checked={this.state.lastDonation} name="lastDonation" onChange={this.checkBoxHandle} value="lastDonation"/> } label="Did you ever donate before this?"/><br/>
@@ -181,8 +213,7 @@ class Profile extends Component {
                       </RadioGroup>
                   </FormControl><br/>
 
-                  <FormControlLabel control={<Switch checked={this.state.avaiable} name="avaiable" onChange={this.checkBoxHandle} value="avaiable"/>} label="Avaiable In Donors List"/><br/>
-                   {/* {this.props.loginError && <p className={classes.error}>{this.props.error}</p>} */}         
+                  <FormControlLabel control={<Switch checked={this.state.avaiable} name="avaiable" onChange={this.checkBoxHandle} value="avaiable"/>} label="Avaiable In Donors List"/><br/>       
 
                   {!this.props.editing ?       
                   <Button className={classes.profileFormRegister} color="secondary" variant="contained" type="submit" value="submit">Register</Button>
@@ -229,7 +260,8 @@ function mapStateToProps(state){
     profile:state.root.profile,
     registrationLoader:state.root.registrationLoader,
     registered:state.root.registered,
-    editing:state.root.editing
+    editing:state.root.editing,
+    previousProfile:state.root.oldProfile
 
   }
 }
@@ -240,7 +272,8 @@ function mapDispatchToProps(dispatch){
     getProfile: (id)=>dispatch(getProfile(id)),
     editProfile:()=>dispatch(editProfile()),
     updateProfile:(obj)=>dispatch(updateProfile(obj)),
-    cancelUpdation: ()=>dispatch(cancelUpdation())
+    cancelUpdation: ()=>dispatch(cancelUpdation()),
+    oldProfile: (pro)=>dispatch(oldProfile(pro))
   }
 }
 

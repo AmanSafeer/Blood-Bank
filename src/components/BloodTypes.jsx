@@ -11,34 +11,42 @@ const O_n='Group O- can donate red blood cells to all positive & negative bloods
 export const bloods=[
     {
         group:'A+',
-        details:A_p
+        details:A_p,
+        receive:['A+','A-','O+','O-']
     },
     {
         group:'A-',
-        details:A_n
+        details:A_n,
+        receive:['A-','O-']
     },
     {
         group:'B+',
-        details: B_p
+        details: B_p,
+        receive:['B+','B-','O+','O-']
     },
     {
         group:'B-',
-        details:B_n
+        details:B_n,
+        receive:['B-','O-']
     },
     {
         group:'AB+',
-        details:AB_p
+        details:AB_p,
+        receive:['A+','A-','B+','B-','AB+','AB-','O+','O-']
     },
     {
         group:'AB-',
-        details:AB_n
+        details:AB_n,
+        receive:['AB-','O-']
     },
     {
         group:'O+',
-        details:O_p
+        details:O_p,
+        receive:['O+','O-']
     },
     {
         group:'O-',
-        details:O_n
+        details:O_n,
+        receive:['O-']
     }
 ]
