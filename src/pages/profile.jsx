@@ -78,7 +78,7 @@ class Profile extends Component {
         lastDonation: false,
         avaiable:true,
         updated:false,
-        vaildDate:false
+        validDate:false
        
     }
   }

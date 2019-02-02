@@ -1,10 +1,19 @@
+@font-face {
+    font-family: myFont;
+    src: url(../../GrobeDeutschmeister.ttf);
+  }
+.topHeading{
+    font-family:fantasy,myFont,cursive;
+    font-size: 33px
+    
+}
 .heading{
     color:#ea0606;
 }
 .logoImg{
     height: auto;
     max-width: 40px;
-    vertical-align: bottom
+    vertical-align: sub
 }
 footer{
     display: flex;

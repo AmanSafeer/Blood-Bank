@@ -142,9 +142,9 @@ class Header extends Component {
       <header className={classes.header}>
         <AppBar position="static" color="default" className={!this.props.menu ? classes.appBar : classes.appBarLogin}>
           <Toolbar>
-            <Typography variant="h4" color="inherit" className={classes.heading}>
+            <div  className="topHeading">
             <img src={logoImg} alt="logo Image" className="logoImg"/> <span className="heading">Blood </span>Bank
-            </Typography>
+            </div>
           </Toolbar>
           {!this.props.menu &&
           <div>  
