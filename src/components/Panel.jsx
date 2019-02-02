@@ -27,7 +27,6 @@ const styles = theme => ({
 });
 
 function DetailedExpansionPanel(props) {
-  console.log(props.loader)
   const { classes } = props;
   return (
     <div className={classes.root} >

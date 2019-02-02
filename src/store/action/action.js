@@ -67,7 +67,7 @@ export function updateProfile(obj){
         ref.child(`users/${obj.uid}/donor/`).once('value', (snap)=>{
                 const value=snap.val();
                 if(value){
-                    console.log(value)
+                   
                     for (var key in value){
                         const data=value[key]
                         data.key=key    
@@ -146,7 +146,7 @@ export function getDonors(value,myId,ind){
                 donorsArr.reverse()
                 dispatch({type:actionTypes.GET_DONORS, payload:donorsArr});
                 if(ind != null){
-                    console.log(ind)
+                   
                 }
                 if (ind==null){dispatch({type:actionTypes.REQUEST_LOADERS_EMPTY})}
 
@@ -209,7 +209,7 @@ export function getRequest(myId,uid){
     return(dispatch)=>{
         ref.child(`users/${myId}/requests/`).once('value', (snap)=>{
             let value =snap.val()
-            console.log(value)
+           
             let dataArr=[];
             if(value){
                 for(var key in value){
@@ -265,7 +265,7 @@ export function getNotifications(myId){
                     for (var id in data){
                         const notification=data[id]
                         dataArr.push(notification)
-                        console.log(notification)  
+                       
                     }
                 }
                 dataArr.reverse()

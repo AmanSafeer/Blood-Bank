@@ -1,9 +1,0 @@
-Although all blood is made of the same basic elements, not all blood is alike. In fact, there are eight different common blood types, which are determind by the presence or absece of certain antigens - substances that can trigger an immune response if they are foreign to the body. Since some antigens can trigger a patient's immnune system to attack the transfused blood, safe transfusions depend on careful blood typing and cross-matching
-
-There are four major blood groups determined by the presence or absence of two antigens -A and -B on the surface of red blood cells:
-
-Group A - has only the A antigen on red cells and B antibody in the plasma.
-Group B - has only the B antigen on red cells and A antibody in the plasma.
-Group AB - has both A and B antigens on red cells but neither A nor B antibody in the plasma.
-Group O - has neither A nor B antigens on red cells but both A and B antibody are in the plasma. 
-

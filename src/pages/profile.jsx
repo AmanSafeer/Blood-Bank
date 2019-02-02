@@ -105,7 +105,7 @@ class Profile extends Component {
       const donationDate = new Date(date)
       const milliseconds= (todayDate.getTime())-(donationDate.getTime())
       const days = parseInt(milliseconds/(1000*60*60*24))
-      console.log(days)
+    
       if(days < 50){
         this.setState({
           [event.target.name]:event.target.value,

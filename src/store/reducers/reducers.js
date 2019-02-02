@@ -190,7 +190,7 @@ export default (state = initialState , action)=>{
         case actionTypes.REQUEST_LOADER_OPEN:{
                const newLoaders= [...state.requestLoaders];
                newLoaders[action.index]=action.value;
-               console.log(newLoaders)
+              
             return{
                 ...state,
                 requestLoaders:newLoaders
@@ -199,7 +199,7 @@ export default (state = initialState , action)=>{
         case actionTypes.REQUEST_LOADER_CLOSE:{
             const newLoaders= [...state.requestLoaders];
             newLoaders[action.index]=action.value;
-            console.log(newLoaders)
+           
             return{
                 ...state,
                 requestLoaders:newLoaders
