@@ -14,11 +14,15 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import SnackBar from '../components/Snackbars'
 import {bloods} from '../components/BloodTypes'
 import {getDonors,saveUserId,getProfile,request,cancelRequest} from '../store/action/action'
  import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
+
+
+
 
 
 const styles =(theme)=>({
@@ -30,7 +34,7 @@ donorsHeading:{
 },
 donorsList:{
   backgroundColor:'rgba(255,255,255,0.9)',
-  minHeight:'50vh',
+  minHeight:'60vh',
     padding:10,
     marginTop:10,
 },
@@ -61,12 +65,12 @@ class Bloods extends Component {
     this.state={
       blood:'',
       labelWidth:0,
-      users:['a']
     }
   }
+  
   changeHandler=(event)=>{
     const blood=bloods.find((val,ind)=>val.group===event.target.value);
-    this.props.getDonors(event.target.value,this.props.userId)
+    this.props.getDonors(event.target.value,this.props.userId,null)
     if(blood){
       this.setState({
         [event.target.name]:event.target.value,
@@ -79,13 +83,15 @@ class Bloods extends Component {
       });
     }
   }
-  request=(obj,uid)=>{
+
+
+  request=(obj,uid,blood,ind)=>{
     obj.request=true
-    this.props.request(obj,uid)
+    this.props.request(obj,uid,blood,ind)
   }
-  cancelRequest=(obj,uid)=>{
+  cancelRequest=(obj,uid,blood,ind)=>{
     obj.request=false
-    this.props.cancelRequest(obj.uid,uid)
+    this.props.cancelRequest(obj.uid,uid,blood,ind)
   }
 
   getData(){
@@ -99,13 +105,11 @@ class Bloods extends Component {
           }
       })
   }
-
   componentDidMount(){
       this.getData();
   }
 
   render() {
-    
       const {classes}= this.props
       return (
         <div className="App">
@@ -128,7 +132,7 @@ class Bloods extends Component {
                             <MenuItem key={ind} value={blood.group}>{blood.group}</MenuItem>
                             )}
                           </Select>
-                    </FormControl>:<Loader/>}<br/>
+                    </FormControl>:<Loader color='#ea0606'/>}<br/>
                     {this.state.blood && <p style={{color:'wheat',fontWeight:'bold'}}>{this.state.bloodDetails}</p>}
                   </div>
               </article>
@@ -143,7 +147,7 @@ class Bloods extends Component {
                       {(this.props.donors.length > 0) ?
                         
                         <Table style={{backgroundColor:'rgba(255,255,255,0.5)'}}>
-                          <TableHead>
+                          <TableHead >
                             <TableRow>
                               <TableCell>Id</TableCell><TableCell>Name</TableCell>
                               <TableCell>Blood Group</TableCell><TableCell>Gender</TableCell>
@@ -161,17 +165,37 @@ class Bloods extends Component {
                               {this.props.profile ?
                               <TableCell>
                                 {(this.props.profile.uid != val.uid) ?
-                                <span>
-                                <Button color="secondary" margin="normal" variant="outlined" onClick={()=>this.request(this.props.profile ,val.uid)}>Request</Button>
-                                {/* <Button style={{color:'darkorange',border:'1px solid'}} margin="normal" variant="outlined" onClick={()=>this.cancelRequest(this.props.profile, val.uid)}>Cancel Request</Button> */}
-                                </span>:
-                                <span>
-                                <Button  margin="normal" variant="outlined" disabled>Request</Button>
-                                </span>}
+                                  <span>
+                                    {this.props.requestLoaders.length > 0 ?
+                                    <span>
+                                      {!this.props.requestLoaders[ind] ?
+                                      <span>   
+                                        {!this.props.checkRequests[ind] ? 
+                                        <Button color="secondary" margin="normal" variant="outlined" onClick={()=>this.request(this.props.profile ,val.uid,this.state.blood,ind)}>Request</Button>:
+                                        <Button style={{color:'darkorange',border:'1px solid', width:'max-content'}}  margin="normal" variant="outlined" onClick={()=>this.cancelRequest(this.props.profile, val.uid,this.state.blood,ind)}>Cancel Request</Button>
+                                          }
+                                      </span>:
+                                      <span style={{display:'flex',justifyContent:'center'}}><Loader size={20} color="gray"/></span>
+                                      } 
+                                    </span>:
+                                    <span>
+                                         {!this.props.checkRequests[ind] ? 
+                                        <Button color="secondary" margin="normal" variant="outlined" onClick={()=>this.request(this.props.profile ,val.uid,this.state.blood,ind)}>Request</Button>:
+                                        <Button style={{color:'darkorange',border:'1px solid', width:'max-content'}}  margin="normal" variant="outlined" onClick={()=>this.cancelRequest(this.props.profile, val.uid,this.state.blood,ind)}>Cancel Request</Button>
+                                         }
+                                    </span>
+                                    }                  
+
+                                  </span>:
+                                  
+                                  <span> 
+                                    <Button  margin="normal" variant="outlined" disabled>Request</Button>
+                                  </span>
+                                 
+                                  }
                               </TableCell>:
                               <TableCell>
-                                 <Button color="secondary" margin="normal" variant="outlined" onClick={this.registryAlert}>Request</Button>
-                                {/* <Button style={{color:'darkorange',border:'1px solid'}} margin="normal" variant="outlined" onClick={this.registryAlert}>Cancel Request</Button> */}
+                                <SnackBar  defaultColor="secondary" variant="outlined" text="request" ver="top"  type="error" val="Please register your self in blood bank first for blood donation request" />
                               </TableCell>
                               }
                             </TableRow>
@@ -183,7 +207,7 @@ class Bloods extends Component {
                         :
                         <div className={classes.emptyBox}>No donor available</div>
                       } 
-                    </div>:<div  className={classes.emptyBox}><Loader size={70}/></div>
+                    </div>:<div  className={classes.emptyBox}><Loader size={70} color='#ea0606'/></div>
                     }
 
                   </div>:<div className={classes.emptyBox}>No blood group selceted </div>
@@ -203,16 +227,20 @@ class Bloods extends Component {
     return {
       userId:state.root.userId,
       donors:state.root.donors,
-      profile:state.root.profile
+      profile:state.root.profile,
+      checkRequests:state.root.checkRequests,
+      requestLoaders:state.root.requestLoaders,
+    
     }
   }
   function mapDispatchToProps(dispatch){
     return {
-      getDonors: (val,uid)=>dispatch(getDonors(val,uid)),
+      getDonors: (val,myId,ind)=>dispatch(getDonors(val,myId,ind)),
       saveUserId:(id)=>dispatch(saveUserId(id)),
       getProfile: (id,)=>dispatch(getProfile(id)),
-      request:(obj,uid)=>dispatch(request(obj,uid)),
-      cancelRequest:(myId,uid)=>dispatch(cancelRequest(myId,uid))
+      request:(obj,uid,blood,ind)=>dispatch(request(obj,uid,blood,ind)),
+      cancelRequest:(myId,uid,blood,ind)=>dispatch(cancelRequest(myId,uid,blood,ind)),
+     
 
     }
   }

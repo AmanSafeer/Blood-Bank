@@ -13,7 +13,7 @@ function Loader(props) {
   const { classes } = props;
   return (
     <div>
-      <CircularProgress className={classes.progress} color="secondary" size={props.size ? props.size: 40} />
+      <CircularProgress className={classes.progress} style={props.color && {color:props.color}} color="secondary" size={props.size ? props.size: 40} />
     </div>
   );
 }

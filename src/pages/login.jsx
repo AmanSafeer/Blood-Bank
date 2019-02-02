@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import * as firebase from 'firebase';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';

@@ -1,6 +1,6 @@
 import {createStore, applyMiddleware,compose} from 'redux';
 import rootReducer from './reducers/index'
-import reducer from './reducers/reducers'
+
 import thunk from 'redux-thunk';
 
 

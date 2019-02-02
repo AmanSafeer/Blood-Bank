@@ -7,11 +7,11 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 // import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import slide from '../slide.jpg';
 import BloodCard from '../components/BloodCards';
 import {bloods} from '../components/BloodTypes';
 import {saveUserId,getProfile} from '../store/action/action'
-import bloodA_p from '../blood.png';
+import slide from '../images/slide.jpg';
+import bloodImg from '../images/bloodImg.png';
 
 const styles =(theme)=>({
 
@@ -105,7 +105,7 @@ class Home extends Component {
           <section className={classes.homeImageSection}>
 
             <div classes={classes.homeSlideImg}>
-              <img src={slide} alt="slider Image" width="100%" height="auto" className="homeSlideImg"/>
+              <img src={slide} alt="slider" width="100%" height="auto" className="homeSlideImg"/>
             </div>
 
             <div className={classes.homeSlideText}>
@@ -116,7 +116,7 @@ class Home extends Component {
                 Blood is the most precious gift that anyone can give to another person.
                 Donating blood not only saves the life also save donor's lives.
               </h2>
-              <Button color="secondary" margin="normal" variant="contained" style={{backgroundColor:'#ff1818'}} onClick={()=>this.props.history.push('/profile')}>Donate Blood</Button>
+              <Button color="secondary" margin="normal" variant="contained" style={{backgroundColor:'#ff1818'}} onClick={()=>this.props.history.push('/profile')}>Register yourself in blood bank</Button>
             </div>
           </section>
 
@@ -144,7 +144,7 @@ class Home extends Component {
                 <p>In addition to the A and B antigens, there is a protein called the Rh factor, which can be either present (+) or absent (–), creating the 8 most common blood types (O+, O-, A+, A-, B+, B-, AB+, AB-).Rh-negative blood is given to Rh-negative patients, and Rh-positive or Rh-negative blood may be given to Rh-positive patients.</p>
                 <div className={classes.homeBloodCards}>
                   {bloods.map((blood,ind)=>
-                  <BloodCard key={ind} image={bloodA_p} group={blood.group} details={blood.details}/>
+                  <BloodCard key={ind} image={bloodImg} group={blood.group} details={blood.details}/>
                   )}
                 </div>
               </article>

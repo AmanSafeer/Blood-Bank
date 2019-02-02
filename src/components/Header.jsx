@@ -7,11 +7,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-// import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button'
-import {Link} from 'react-router-dom'
 import './styles/styles.css'
-import logoImg from '../blood.png'
+import logoImg from '../images/blood.png'
 import Menu from './Menu'
 
 
@@ -40,7 +38,9 @@ const styles =(theme)=>({
   heading:{
     fontFamily:"fantasy",  
   },
- 
+  signOut:{
+    backgroundColor:'#ff1818'
+  },
   tabsRoot: {
     backgroundColor: theme.palette.background.paper,
   },
@@ -93,7 +93,7 @@ const styles =(theme)=>({
 class Header extends Component {
   constructor(props){
     super(props)
-    this.media= window.matchMedia("(max-width: 750px)")
+    this.media= window.matchMedia("(max-width: 900px)")
     this.state = {
       value: props.value,
       screenBreak:false
@@ -152,9 +152,9 @@ class Header extends Component {
             <Tabs value={value} onChange={this.handleChange} classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }} >
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Home"  onClick={() =>this.pageChange('/home')} />
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Donors List"  onClick={() =>this.pageChange('/donors')}/>
-                <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Notifications & Requests" onClick={() =>this.pageChange('/notifications')}/> 
+                <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Requests & Notifications " onClick={() =>this.pageChange('/requests')}/> 
                 <Tab disableRipple classes={{ root: classes.tabRoot, selected: classes.tabSelected }} label="Your Profile" onClick={() =>this.pageChange('/profile')}/> 
-                <Button  variant="contained" color="secondary" margin="normal" style={{backgroundColor:'#ff1818'}} onClick={this.signOut}>Logout</Button> 
+                <Button  className={classes.signOut} variant="contained" color="secondary" margin="normal"  onClick={this.signOut}>Logout</Button> 
             </Tabs>
             :
               <Menu navigation={this.pageChange} signOut={this.signOut}/>

@@ -19,8 +19,11 @@ import Footer from '../components/Footer';
 import {bloods} from '../components/BloodTypes'
 import PaperSheet from '../components/PaperSheet'
 import Loader from '../components/Loader';
+import {registerDonor,saveUserId,getProfile,editProfile,updateProfile,cancelUpdation} from '../store/action/action'
 import SnackBar from '../components/Snackbars'
-import {registerDonor,saveUserId,getProfile,editProfile,updateProfile,cancelUpdation,oldProfile} from '../store/action/action'
+
+
+
 
 const styles =(theme)=>({
  
@@ -51,7 +54,7 @@ const styles =(theme)=>({
   },
   emptyBox:{
     display:'flex',
-    minHeight:'50vh',
+    minHeight:'80vh',
     justifyContent:'center',
     alignItems:'center',
     backgroundColor:'rgba(255,255,255,0.9)',
@@ -73,82 +76,99 @@ class Profile extends Component {
         gender:'',
         lastDate:'',
         lastDonation: false,
-        avaiable:true
+        avaiable:true,
+        updated:false,
+        vaildDate:false
+       
     }
   }
-
-  changeHandler=(event)=>{
-      this.setState({[event.target.name]:event.target.value});
-  }
-  checkBoxHandle=(event)=>{
-    this.setState({[event.target.name]:event.target.checked});
-  }
-
+  
   changeForm=()=>{
       this.setState({signIn:!this.state.signIn});
   }
-
-  register=(event)=>{
-    event.preventDefault();
-    const date=this.state.lastDate;
-    if(date){
-      const todayDate= new Date();
+  changeHandler=(event)=>{
+      this.setState({
+        [event.target.name]:event.target.value,
+        updated:true
+      });
+  }
+  checkBoxHandle=(event)=>{
+    this.setState({
+      [event.target.name]:event.target.checked,
+      updated:true
+    });
+  }
+  
+  checkDateHandler=(event)=>{
+    const date = event.target.value;
+    const todayDate= new Date();
       const donationDate = new Date(date)
       const milliseconds= (todayDate.getTime())-(donationDate.getTime())
       const days = parseInt(milliseconds/(1000*60*60*24))
       console.log(days)
-      if(days < 150){
-        alert('last blood donation must be 150 days ago')
-       return
+      if(days < 50){
+        this.setState({
+          [event.target.name]:event.target.value,
+          validDate:false,
+          updated:true
+        })
+      }
+      else{
+        this.setState({
+          [event.target.name]:event.target.value,
+          validDate:true,
+          updated:true
+        })
       } 
-    }
+
+
+  }
+
+  register=(event)=>{
+    event.preventDefault();
     const donor =this.state;
     donor.uid=this.props.userId
     this.props.registerDonor(donor)
 
-    this.setState({name:'',email:'',age:'',contact:'',address:'', blood:'',gender:'',lastDate:'',lastDonation: false,})
+    this.setState({name:'',email:'',age:'',contact:'',address:'', blood:'',gender:'',lastDate:'',lastDonation: false,avaiable:false, updated:false, validDate:false})
   }
 
   edit=()=>{
-    const {name,email,age,contact,address,blood,gender,lastDate,lastDonation,key,uid} = this.props.profile
-    const Profile=this.props.profile
-    this.props.oldProfile(Profile)
     this.props.editProfile();
+    const {name,email,age,contact,address,blood,gender,lastDate,lastDonation,key,uid,avaiable} = this.props.profile
 
-    this.setState(
-      {name:name ,email:email ,age:age ,contact:contact ,address:address, blood:blood, gender:gender, lastDate:lastDate, lastDonation: lastDonation, key:key, uid:uid})
-
-  }
-  update=()=>{
-    const date=this.state.lastDate;
-    if(date){
+      const date=lastDate
       const todayDate= new Date();
       const donationDate = new Date(date)
       const milliseconds= (todayDate.getTime())-(donationDate.getTime())
       const days = parseInt(milliseconds/(1000*60*60*24))
-      if(days < 150){
-        alert('last blood donation must be 150 days ago')
-        return
+      if(days < 50){
+        this.setState(
+          {name:name ,email:email ,age:age ,contact:contact ,address:address, blood:blood, gender:gender, lastDate:lastDate, lastDonation: lastDonation,avaiable:avaiable, updated:false, validDate:false, key:key, uid:uid }
+          )
       } 
-    }
-    let match=false;
-    const oldProfile= this.props.previousProfile;
-    const profile =this.state;
-    console.log(oldProfile)
-    for (var key in profile){
-      if(profile[key] !== oldProfile[key]){
-        match=true;
-        break
+      else{
+        this.setState(
+          {name:name ,email:email ,age:age ,contact:contact ,address:address, blood:blood, gender:gender, lastDate:lastDate, lastDonation: lastDonation,avaiable:avaiable, updated:false, validDate:true, key:key, uid:uid }
+          )
       }
-    }
+    
 
-    if(match){
+    
+
+  }
+  update=()=>{
+    const profile =this.state;
     this.props.updateProfile(profile)
-    this.setState({name:'',email:'',age:'',contact:'',address:'', blood:'',gender:'',lastDate:'',lastDonation: false, key:'', uid:''})
-    }
-    else{
-      alert('nothing changed in profile')
-    }
+    this.setState({name:'',email:'',age:'',contact:'',address:'', blood:'',gender:'',lastDate:'',lastDonation: false, avaiable:false, updated:false, validDate:false, key:'', uid:''})
+   
+  }
+
+  cancelForm=()=>{
+    this.props.cancelUpdation()
+    this.setState({
+      updated:false
+    })
   }
 
   getData(){
@@ -173,14 +193,14 @@ class Profile extends Component {
       <div className="App">
         <Header history={this.props.history} value={3}/>
         <div className="container">
-          {this.props.registrationLoader ?
-          <div className={classes.emptyBox}><Loader size={70}/></div>
+          {(this.props.profileLoader || this.props.registrationLoader || this.props.updateLoader)?
+          <div className={classes.emptyBox}><Loader size={70} color='#ea0606'/></div>
           :
           <div>
           {!this.props.registered ?
           <section >
             <article>
-                <h1 className={classes.profileFormHeading}>Registration</h1>
+                <h1 className={classes.profileFormHeading}>Blood Bank Registration</h1>
 
                 <form className={classes.profileForm} onSubmit={this.register}>
                   <TextField className={classes.profileFormField} label="Name"  margin="normal" type="text" name="name" value={this.state.name} onChange={this.changeHandler} required={true}/><br/>
@@ -203,7 +223,7 @@ class Profile extends Component {
                   </div>
                          
                   <FormControlLabel control={<Checkbox checked={this.state.lastDonation} name="lastDonation" onChange={this.checkBoxHandle} value="lastDonation"/> } label="Did you ever donate before this?"/><br/>
-                  {this.state.lastDonation && <span><TextField className={classes.profileFormField} label="Last time donation Date"  margin="normal" type="date" name="lastDate" value={this.state.lastDate} onChange={this.changeHandler} required={true}/><br/></span>}
+                  {this.state.lastDonation && <span><TextField className={classes.profileFormField} label="Last time donation Date"  margin="normal" type="date" name="lastDate" value={this.state.lastDate} onChange={this.checkDateHandler} required={true}/><br/></span>}
 
                   <FormControl component="fieldset" margin="normal">
                     <FormLabel  component="legend">Gender:</FormLabel>
@@ -219,8 +239,18 @@ class Profile extends Component {
                   <Button className={classes.profileFormRegister} color="secondary" variant="contained" type="submit" value="submit">Register</Button>
                   :
                   <span>
-                  <Button className={classes.profileFormUpdate} color="secondary" variant="contained" onClick={this.update}>Update Profile</Button>
-                  <Button variant="contained" onClick={this.props.cancelUpdation}>Cancel</Button>
+                  {this.state.updated ?
+                  <span>
+                    {this.state.validDate ?
+                    <Button className={classes.profileFormUpdate} color="secondary" variant="contained" onClick={this.update}>Update Profile</Button>:
+                    <SnackBar background="darkorange" color="white" variant="contained" text="Update Profile" ver="top" type="error" val="last blood donation must be at least 50 days ago" />}
+                  </span>
+                  :
+                      
+                  <SnackBar background="darkorange" color="white" variant="contained" text="Update Profile" ver="bottom" type="warning" val="Nothing changed in profile" />
+          
+                  }
+                  <Button variant="contained" onClick={this.cancelForm}>Cancel</Button>
                   </span>
                   }
                   
@@ -257,11 +287,12 @@ class Profile extends Component {
 function mapStateToProps(state){
   return {
     userId:state.root.userId,
-    profile:state.root.profile,
-    registrationLoader:state.root.registrationLoader,
     registered:state.root.registered,
+    registrationLoader:state.root.registrationLoader,
+    profile:state.root.profile,
+    profileLoader:state.root.profileLoader,
     editing:state.root.editing,
-    previousProfile:state.root.oldProfile
+    updateLoader:state.root.updateLoader,
 
   }
 }
@@ -273,7 +304,6 @@ function mapDispatchToProps(dispatch){
     editProfile:()=>dispatch(editProfile()),
     updateProfile:(obj)=>dispatch(updateProfile(obj)),
     cancelUpdation: ()=>dispatch(cancelUpdation()),
-    oldProfile: (pro)=>dispatch(oldProfile(pro))
   }
 }
 
