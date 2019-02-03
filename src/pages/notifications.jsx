@@ -103,7 +103,7 @@ value
                       {this.props.requests.length > 0 ?
                         <div>
                         {this.props.requests.map((val,ind)=>
-                          <Panel text={`${val.name} requested you for blood donation`} key={ind} obj={val} buttons={true} color='rgba(249, 137, 137, 0.2)' accept={()=>this.accept(this.props.userId,val.uid,this.props.profile)} ignore={()=>this.ignore(this.props.userId,val.uid)} loader={this.props.acceptLoader}/>
+                          <Panel text={`${val.name} requested you for blood donation`} key={ind} obj={val} buttons={true} color='rgba(249, 137, 137, 0.3)' accept={()=>this.accept(this.props.userId,val.uid,this.props.profile)} ignore={()=>this.ignore(this.props.userId,val.uid)} loader={this.props.acceptLoader}/>
                         )}
                         </div>:<div className={classes.emptyBox} style={{backgroundColor:'transparent'}}>No Requests</div>
                       }  

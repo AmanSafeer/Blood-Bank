@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import red from '@material-ui/core/colors/red';
 import * as firebase from 'firebase';
 import {connect} from 'react-redux';
-
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
@@ -32,8 +32,24 @@ const styles =(theme)=>({
     color:'red',
     fontWeight:'bold',
 
-  }
-
+  },
+  cssLabel: {
+    '&$cssFocused': {
+      color: red[500],
+    },
+  },
+  cssFocused: {},
+  cssUnderline: {
+    '&:after': {
+      borderBottomColor: red[500],
+    },
+  },
+  cssOutlinedInput: {
+    '&$cssFocused $notchedOutline': {
+      borderColor: red[500],
+    },
+  },
+  notchedOutline: {},
 })
 
 class Login extends Component {
@@ -116,8 +132,8 @@ class Login extends Component {
 
                   <h1 className={classes.formHeading}>Login</h1>
                   <p className={classes.error}>{this.props.loginError && this.props.error}</p>
-                  <TextField  label="Email" variant="outlined" margin="normal" type="email" name="email" value={this.state.email} onChange={this.changeHandler} onClick={this.props.loginErrorClose}/><br/>
-                  <TextField label="Password" variant="outlined" margin="normal" type="password" name="password" value={this.state.password} onChange={this.changeHandler} onClick={this.props.loginErrorClose}/><br/>
+                  <TextField InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused,notchedOutline: classes.notchedOutline, },}} label="Email" variant="outlined" margin="normal" type="email" name="email" value={this.state.email} onChange={this.changeHandler} onClick={this.props.loginErrorClose}/><br/>
+                  <TextField InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused,notchedOutline: classes.notchedOutline, },}} label="Password" variant="outlined" margin="normal" type="password" name="password" value={this.state.password} onChange={this.changeHandler} onClick={this.props.loginErrorClose}/><br/>
                   {!this.props.loader ?
                   <Button variant="contained" color="secondary" type="submit" value="submit">Sign In</Button>:
                   <Loader/>}
@@ -133,8 +149,8 @@ class Login extends Component {
 
                   <h1 className={classes.formHeading}>Registration</h1>
                   {this.props.loginError && <p className={classes.error}>{this.props.error}</p>}
-                  <TextField label="Email" variant="outlined" margin="normal"  type="email" name="email" value={this.state.email} onChange={this.changeHandler} onClick={this.props.loginErrorClose}/><br/>
-                  <TextField label="Password" variant="outlined" margin="normal" type="password" name="password" value={this.state.password} onChange={this.changeHandler} onClick={this.props.loginErrorClose}/><br/>
+                  <TextField InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused,notchedOutline: classes.notchedOutline, },}} label="Email" variant="outlined" margin="normal"  type="email" name="email" value={this.state.email} onChange={this.changeHandler} onClick={this.props.loginErrorClose}/><br/>
+                  <TextField InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused,notchedOutline: classes.notchedOutline, },}} label="Password" variant="outlined" margin="normal" type="password" name="password" value={this.state.password} onChange={this.changeHandler} onClick={this.props.loginErrorClose}/><br/>
                   {!this.props.loader ?
                   <Button variant="contained" color="secondary" type="submit" value="submit">Sign Up</Button>:
                   <Loader/>}

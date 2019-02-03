@@ -14,6 +14,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import Switch from '@material-ui/core/Switch';
+import Input from '@material-ui/core/Input';
+import red from '@material-ui/core/colors/red';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import {bloods} from '../components/BloodTypes'
@@ -59,7 +61,24 @@ const styles =(theme)=>({
     alignItems:'center',
     backgroundColor:'rgba(255,255,255,0.9)',
     padding:10,
-  }
+  },
+  cssLabel: {
+    '&$cssFocused': {
+      color: red[500],
+    },
+  },
+  cssFocused: {},
+  cssUnderline: {
+    '&:after': {
+      borderBottomColor: red[500],
+    },
+  },
+  cssOutlinedInput: {
+    '&$cssFocused $notchedOutline': {
+      borderColor: red[500],
+    },
+  },
+  notchedOutline: {},
 
 })
 
@@ -203,27 +222,28 @@ class Profile extends Component {
                 <h1 className={classes.profileFormHeading}>Blood Bank Registration</h1>
 
                 <form className={classes.profileForm} onSubmit={this.register}>
-                  <TextField className={classes.profileFormField} label="Name"  margin="normal" type="text" name="name" value={this.state.name} onChange={this.changeHandler} required={true}/><br/>
-                  <TextField className={classes.profileFormField} label="Email"  margin="normal" type="email" name="email" value={this.state.email} onChange={this.changeHandler} required={true}/><br/>
-                  <TextField className={classes.profileFormField} label="Age"  margin="normal" type="number" name="age" value={this.state.age} onChange={this.changeHandler} required={true}/><br/>
-                  <TextField className={classes.profileFormField} label="Contact No"  margin="normal" type="number" name="contact" value={this.state.contact} onChange={this.changeHandler} required={true}/><br/>
-                  <TextField className={classes.profileFormField} label="Address"  margin="normal" type="text" name="address" value={this.state.address} onChange={this.changeHandler} required={true}/><br/>
+                  <TextField className={classes.profileFormField} InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused, underline: classes.cssUnderline, },}} label="Name"  margin="normal" type="text" name="name" value={this.state.name} onChange={this.changeHandler} required={true}/><br/>
+                  <TextField className={classes.profileFormField} InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused, underline: classes.cssUnderline, },}} label="Email"  margin="normal" type="email" name="email" value={this.state.email} onChange={this.changeHandler} required={true}/><br/>
+                  <TextField className={classes.profileFormField} InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused, underline: classes.cssUnderline, },}} label="Age"  margin="normal" type="number" name="age" value={this.state.age} onChange={this.changeHandler} required={true}/><br/>
+                  <TextField className={classes.profileFormField} InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused, underline: classes.cssUnderline, },}} label="Contact No"  margin="normal" type="number" name="contact" value={this.state.contact} onChange={this.changeHandler} required={true}/><br/>
+                  <TextField className={classes.profileFormField} InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused, underline: classes.cssUnderline, },}} label="Address"  margin="normal" type="text" name="address" value={this.state.address} onChange={this.changeHandler} required={true}/><br/>
                   <div>
                     <FormControl required className={classes.profileFormField}>
-                      <InputLabel>Blood Group</InputLabel>
-                      <Select style={{textAlign:'left'}} value={this.state.blood} onChange={this.changeHandler} inputProps={{ name: 'blood',}}>
-                        <MenuItem value="">
+                      <InputLabel classes={{ root: classes.cssLabel,focused: classes.cssFocused, }}>Blood Group</InputLabel>
+                      <Select input={<Input classes={{underline: classes.cssUnderline,}}/>} style={{textAlign:'left'}} value={this.state.blood} onChange={this.changeHandler} inputProps={{ name: 'blood',}}>
+                        <MenuItem   value="">
                           <em>None</em>
                         </MenuItem>
                         {bloods.map((blood,ind)=>
                         <MenuItem key={ind} value={blood.group}>{blood.group}</MenuItem>
                         )}
+                     
                       </Select>
                     </FormControl><br/>
                   </div>
                          
                   <FormControlLabel control={<Checkbox checked={this.state.lastDonation} name="lastDonation" onChange={this.checkBoxHandle} value="lastDonation"/> } label="Did you ever donate before this?"/><br/>
-                  {this.state.lastDonation && <span><TextField className={classes.profileFormField} label="Last time donation Date"  margin="normal" type="date" name="lastDate" value={this.state.lastDate} onChange={this.checkDateHandler} required={true}/><br/></span>}
+                  {this.state.lastDonation && <span><TextField className={classes.profileFormField} InputLabelProps={{ classes: { root: classes.cssLabel, focused: classes.cssFocused,},}} InputProps={{classes: {root: classes.cssOutlinedInput, focused: classes.cssFocused, underline: classes.cssUnderline, },}} label="Last time donation Date"  margin="normal" type="date" name="lastDate" value={this.state.lastDate} onChange={this.checkDateHandler} required={true}/><br/></span>}
 
                   <FormControl component="fieldset" margin="normal">
                     <FormLabel  component="legend">Gender:</FormLabel>
@@ -235,18 +255,31 @@ class Profile extends Component {
 
                   <FormControlLabel control={<Switch checked={this.state.avaiable} name="avaiable" onChange={this.checkBoxHandle} value="avaiable"/>} label="Avaiable In Donors List"/><br/>       
 
-                  {!this.props.editing ?       
-                  <Button className={classes.profileFormRegister} color="secondary" variant="contained" type="submit" value="submit">Register</Button>
+                  {!this.props.editing ?
+                  <span> 
+                    {this.state.lastDonation ?
+                      <span>
+                        {this.state.validDate ?
+                        <Button className={classes.profileFormRegister} color="secondary" variant="contained" type="submit" value="submit">Register</Button>:
+                        <SnackBar background="green" color="white" variant="contained" text="Register" ver="top" type="error" val="last blood donation must be at least 50 days ago" />}
+                      </span>
+                    :
+                    <Button className={classes.profileFormRegister} color="secondary" variant="contained" type="submit" value="submit">Register</Button>}
+                  </span>
                   :
                   <span>
                   {this.state.updated ?
                   <span>
-                    {this.state.validDate ?
-                    <Button className={classes.profileFormUpdate} color="secondary" variant="contained" onClick={this.update}>Update Profile</Button>:
-                    <SnackBar background="darkorange" color="white" variant="contained" text="Update Profile" ver="top" type="error" val="last blood donation must be at least 50 days ago" />}
+                    {this.state.lastDonation ?
+                    <span>
+                      {this.state.validDate ?
+                        <Button className={classes.profileFormUpdate} color="secondary" variant="contained" onClick={this.update}>Update Profile</Button>
+                        :
+                        <SnackBar background="darkorange" color="white" variant="contained" text="Update Profile" ver="top" type="error" val="last blood donation must be at least 50 days ago" />}
+                    </span>:
+                    <Button className={classes.profileFormUpdate} color="secondary" variant="contained" onClick={this.update}>Update Profile</Button>}
                   </span>
                   :
-                      
                   <SnackBar background="darkorange" color="white" variant="contained" text="Update Profile" ver="bottom" type="warning" val="Nothing changed in profile" />
           
                   }
